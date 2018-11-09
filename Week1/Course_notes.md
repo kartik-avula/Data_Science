@@ -35,7 +35,7 @@ x4 <- c(TRUE, FALSE) #logical
 
 ### Higher order objects 
 There are 5 major objects (going from most basic to more complex)
-* vector
+* vector (specifically atomic vector)
 * lists
 * factor
 * matrix
@@ -52,9 +52,9 @@ Each of these objects have attributes which are accessible through ```attributes
 
 *Object Type* | *Instantiation* | *Dimension* | *Names attr* | *Others*
 --------------|-----------------|--------------|---------|---------
-vector        |```vector(mode="numeric",length=10) ```| NA | names(x) | NA
-lists         |```list("a", 1+2.1i, 2.1, 2, T, c("a","b")) ```| NA | names(x) | NA
-factors       |```factor(c("yes", "yes","no","yes"), levels = c("yes","no")))```| NA | names(x) | _levels_ defines the names/order of factor, _table_ tabulates by cross-classifying factors, _unclass_ shows underlying nos. 
+vector        |```vector(mode="numeric",length=10) ```| NULL | names(x) | NA
+lists         |```list("a", 1+2.1i, 2.1, 2, T, c("a","b")) ```| NULL | names(x) | NA
+factors       |```factor(c("yes", "yes","no","yes"), levels = c("yes","no")))```| NULL | names(x) | _levels_ defines the names/order of factor, _table_ tabulates by cross-classifying factors, _unclass_ shows underlying nos. 
 matrix        |```matrix(1:10, nrow=5, ncol=2)```| _dim_ a list of 2 char vectors to set & get; nrow/ncol to get | _dimnames_ | _rbind_, _cbind_
 data.frame    |```data.frame(column1 = c("a","b","c"), column2 = 3:5)```| _dim_ a list of 2 char vectors to set & get; nrow/ncol to get | _names_ and _row.names_ | _rbind_, _cbind_
 
@@ -68,6 +68,9 @@ data.frame    |```data.frame(column1 = c("a","b","c"), column2 = 3:5)```| _dim_ 
 * A common attribute to all these objects is comment. Accessible through comment(x) allows the programmer to add a comment to an object. Does not get printed. 
 * A nonsensical coercion leads to NA
 * All NaNs are NAs but not vice versa. NAs also have a class. 
+* You cannot use _my\_var == NA_ instead of _is.na()_ because NA is not a value that can be compare. So it evaluates to NA. Note that NA can have multiple atomic classes as well. This is consistent with that 
+* identical checks for values and attributes. Both need to be equal. Also identical and not _==_ should be used in looping in R  
+
 
 ## Reading data
 
@@ -126,11 +129,13 @@ This is like _streams_ in C. there are 4 main functions, which can be called by 
 * *\$* - Sames as above 
 
 ### Vector indexing 
-* There are 2 types of indexing for _\[\]_ operator
-  * *numeric indexing* e.g., x[1], x[2], x[1:4]
-  * *logical indexing* e.g., x[is.NA(x)], x[x>"a"], x[x>1]
+* There are 3 types of indexing for _\[\]_ operator
+  * *numeric indexing* e.g., x[1], x[2], x[1:4]. You can also define negative integers almost like the ! operator. x[c(-2,-5)] gives values in all indices except 2 and 5 
+  * *logical indexing* e.g., x[is.na(x)], x[x>"a"], x[x>1]. Important to beware of NAs in the logical index. Those indices with NAs also get picked up (in addition to TRUE) as NA. So best practice is to do and e.g. ```x[!is.na(x) & x>0]```
+  * *named indexing* e.g., vect["bar"]
 * Note that numeric indexing also works for something lile x[c(1,3)] if you want only the first and third element 
 * To get 2 elements of a list x11, you can do x11[c(1,3)]
+* R does not prevent us from asking for out of bounds indices. Could be a source of bugs. 
 
 ### Double bracket operator or $<name> operator (for lists)
 * This operator can be used with a "computed index" i.e. the index can be a variable. However it has to give only 
@@ -145,6 +150,24 @@ This is like _streams_ in C. there are 4 main functions, which can be called by 
 ### Subsetting missing values 
 * complete.cases() is a useful function to identify rows where all the arguments are not NA * something like ```airqualitydataframe[good,][1:6,]``` is allowed ! 
 
-## Vectorized operations 
+## Vectorized operations and other miscellaneous learnings 
 * By default R just does the operation like a dot or scalar operation i.e adding/multiplying corresponding elements 
 * For true matrix muultiplication the operator is *\%\*\%*
+* To append to a list the right hand side must be a list i.e. ```mylist[5] < list(c(1,2,3))```
+
+### Workspace commands 
+* *getwd(), setwd()* - Get and set working directories 
+* *ls()* -  Lists workspace objects 
+* *list.files(), dir()* - to see working directory files 
+* *args(<function_name>)* - Returns arguments a function takes 
+* *dir.create(), file.create* - to create new directories/files from inside R. In general, there are a lot of useful functions using *_file.\*_* and *_dir.\*_* functions. *_file.path_* is probably the most important 
+
+Windows use \\ while unix and R use \/.   
+
+### Sequence of numbers and vectors 
+* *\:* is from-to operator. Starting from "from" and incrementing by 1 until "to" is not crossed.For 2 factors, it creates a new factor variable which combines the levels of the earlier 2 factor variables.  
+* *seq* - Similar to the colon operator but gives more flexibility e.g., _by_, _length.out_, _along.with_ . There are also custom functions for these e.g., _seq_along_
+* *rep* - This is the other option ``` rep(c(0,1), times = 10)```. each is an alternative to times 
+* *paste* - Does 2 levels of concatenations. For e.g., ```paste(1:3, c("X", "Y", "Z"), sep = "", collapse = "-")``` produces _1X-2Y-3Z_
+  * Concatenates corresponding elements of vectors given as arguments (to create a vector of the same length as the largest argument). The separator for this concatenation is defined by _sep \=_
+  * If (and only if) the _collapse \=_ is set, it also collapses the formed vector into a single string, with the separator 
