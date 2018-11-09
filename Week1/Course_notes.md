@@ -10,8 +10,8 @@
 * http://bioconductor.org also has a lot of bio stats related packages 
 * https://cran.r-project.org/ has a lot of useful resources
 * Getting help - https://www.r-project.org/help.html 
-		??? r-help@r-project.org 
-		??? r-devel@r-project.org
+    * r-help@r-project.org 
+    * r-devel@r-project.org
 	
 
 
@@ -42,7 +42,7 @@ There are 5 major objects (going from most basic to more complex)
 * array (n-dimensional vector)
 * data.frame
 
-* Matrices, arrays, lists and data-frames (list of heterogenous vectors of same length) can be thought of deviations from vectors on the basis of order/dimensionality and homogeneity *
+Matrices, arrays, lists and data-frames (list of heterogenous vectors of same length) can be thought of deviations from vectors on the basis of order/dimensionality and homogeneity 
 
 Each of these objects have attributes which are accessible through ```attributes()``` and ```attr()``` functions in addition to other functions which target specific attributes. The key types of attributes are:
 * *class* - character, complex, numeric, integer, logical 
