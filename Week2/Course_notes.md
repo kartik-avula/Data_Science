@@ -25,7 +25,8 @@ Key insights on control structures are:
 * R follows lazy execution i.e., it does not flag an error till there is one during execution. Hince it is ok to not pass all arguments etc. 
 * This type of use (not all arguments used) is quite common in wrapper(generic?) functions. These  functions dispatch other functions based on which variables are passed to it. _seq_ is such an example. Underlying functions are _seq\.int_ , _seq\_along_ and _seq\_len_
 * The _..._ argument is used for Generic functions which pass these on to other functions e.g., graphical functions. Any variable after _..._ has to be named explicitly during the call   
-
+* R function can have functions as arguments. You can unpack _..._ by creating a list using ```arg_var<-list(...)```. You can access the named elements (assuming variables passed with name) using ``` arg_var[["var_name"]] ```
+* R allows you to create new operators e.g., ``` %p% <- function(left, right){left*right+1} ``` 
 
 ## Lexical scoping 
 * R uses *lexical or static scoping* rather than dynamic scoping. This means that variable context depends on the environment where the function is _defined_, not just called. If both definition and call happen in the same environment then it _looks_ like dynamic scoping which can be confusing. Also if the variable value changes in the _defined environment_ then the function changes 
@@ -37,6 +38,7 @@ Key insights on control structures are:
   * .GlobalEnv first always 
   * new loaded packages (using _library()_). LIFO 
   * _stats_ down to _base_ packages and then _empty_ environment 
+ * The _parent frame_ of a function is its calling environment 
 
 ## Why lexical scoping in statistics   
 * At first glance, lexical scoping does not really seem useful because - what would be the case where you define a function in one environment and then change environments and call it. After all you the most likely use case is that you do both these in the same package or .GlobalEnv 
@@ -59,5 +61,10 @@ Key insights on control structures are:
     * _POSIXlt_ stores a list with Year, Month, Days etc. ```names(unclass(x))``` will show these elements
 * _POSIXct_ is recommended for data frames because its an integer
 * _strptime()_ is one of the most important function to convert to this format
-* Other important ones are of the _as.\<class_name\>_ format* 
+* Other important ones are of the _as\.\<class_name\>_ format* 
 
+## Logic functions 
+* \& operates on entire vector while \&\& operates only on first element. Similarly for \|
+* Order of oeprator is \&\& and then \|\|. Expressions around \&\& get evaluated first 
+* Identical needs matching of attributes also 
+* _which()_ takes a logical vector and returns a vector of indices which are TRUE. OTher such functions are _any()_ and _all()_
