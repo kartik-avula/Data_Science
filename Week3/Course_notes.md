@@ -10,14 +10,6 @@
 * *tapply* - Apply a function over subsets of a vector (table-apply)
 * *mapply* - Multivariate version of lapply 
 
-*Object Type* | *Instantiation* | *Dimension* | *Names attr* | *Others*
---------------|-----------------|--------------|---------|---------
-vector        |```vector(mode="numeric",length=10) ```| NULL | names(x) | NA
-lists         |```list("a", 1+2.1i, 2.1, 2, T, c("a","b")) ```| NULL | names(x) | NA
-factors       |```factor(c("yes", "yes","no","yes"), levels = c("yes","no")))```| NULL | names(x) | _levels_ defines the names/order of factor, _table_ tabulates by cross-classifying factors, _unclass_ shows underlying nos. 
-matrix        |```matrix(1:10, nrow=5, ncol=2)```| _dim_ a list of 2 char vectors to set & get; nrow/ncol to get | _dimnames_ | _rbind_, _cbind_
-data.frame    |```data.frame(column1 = c("a","b","c"), column2 = 3:5)```| _dim_ a list of 2 char vectors to set & get; nrow/ncol to get | _names_ and _row.names_ | _rbind_, _cbind_
-
 
 ### lapply and sapply
 * *lapply* takes or coerces _x_ into a list and returns a list 
